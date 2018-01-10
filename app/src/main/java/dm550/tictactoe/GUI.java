@@ -9,7 +9,7 @@ public class GUI extends JFrame implements UserInterface, MouseListener {
     public static void main(String[] args) {
         GUI ui = new GUI();
         int numPlayers = ui.getParameter("number of players",2,6);
-        Game game = new TTTGame(numPlayers);
+        Game game = new CFGame(numPlayers);
         ui.startGame(game);
     }
 

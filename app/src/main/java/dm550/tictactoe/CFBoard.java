@@ -1,7 +1,7 @@
 package dm550.tictactoe;
 
 /** represents a tic tac toe board of a given size */
-public class TTTBoard {
+public class CFBoard {
     
     /** 2-dimensional array representing the board
      * coordinates are counted from top-left (0,0) to bottom-right (size-1, size-1)
@@ -16,7 +16,7 @@ public class TTTBoard {
     /** constructor for creating a copy of the board
      * not needed in Part 1 - can be viewed as an example 
      */
-    public TTTBoard(TTTBoard original) {
+    public CFBoard(CFBoard original) {
         this.size = original.size;
         for (int y = 0; y < this.size; y++) {
             for (int x = 0; x < this.size; x++) {
@@ -26,7 +26,7 @@ public class TTTBoard {
     }
     
     /** constructor for creating an empty board for a given number of players */
-    public TTTBoard(int numPlayers) {
+    public CFBoard(int numPlayers) {
         this.size = 6 ;
         this.board = new int[this.getSize() + 1][this.getSize()];
     }
@@ -36,6 +36,13 @@ public class TTTBoard {
         if (board[c.getX()][c.getY()]==0)
             return true;
         else
+            return false;
+    }
+    public boolean isFreeCol(int x) {
+        for(int y = 0; y < size; y++) {
+            if (board[x][y] == 0)
+                return true;
+        }
             return false;
     }
     
@@ -51,11 +58,16 @@ public class TTTBoard {
      * checks that the given positions is on the board
      * checks that the player number is valid 
      */
-    public void addMove(Coordinate c, int player) {
+    public void addMove(int x, int player) {
         try {
-            if (c.checkBoundaries(size + 1, size)) {
+            //if there is room in this column
+            if (board[x][0]==0) {
                 if (player < this.size) {
-                    board[c.getX()][c.getY()] = player;
+                    for(int y = size-1; y >= 0; y--)
+                        if(board[x][y]==0) {
+                            board[x][y] = player;
+                            break;
+                        }
                 }
             }
         }
@@ -80,50 +92,52 @@ public class TTTBoard {
      */
     public int checkWinning() {
         int result = 0;
-        for(int x = 0; x<size + 1 ;x++) {
+        for(int x = 0; x<size;x++) {
             for (int y = 0; y < size; y++) {
                 Coordinate start = new XYCoordinate(x, y);
-                result = checkSequence(start, 0, 1);
-                if(result>0)
-                    return result;
-                result = checkSequence(start, 1, 0);
-                if(result>0)
-                    return result;
-                result = checkSequence(start, 1, 1);
-                if(result>0)
-                    return result;
-                result = checkSequence(start, -1, 1);
-                if(result>0)
-                    return result;
+                //We are interested in checking cells that are not free
+                if(!isFree(start)) {
+                    result = checkSequence(start, 0, 1);
+                    if (result > 0)
+                        return result;
+                    result = checkSequence(start, 1, 0);
+                    if (result > 0)
+                        return result;
+                    result = checkSequence(start, 1, 1);
+                    if (result > 0)
+                        return result;
+                    result = checkSequence(start, -1, 1);
+                    if (result > 0)
+                        return result;
+                }
             }
         }
         return result;
     }
-    
+
     /** internal helper function checking one row, column, or diagonal */
     private int checkSequence(Coordinate start, int dx, int dy) {
+        //The
         int count = 1;
-        int currentPlayer = board[start.getX()][start.getY()];
-        for (int i = 1; i < 4; i++)
-        {
-            start = start.shift(dx,dy);
-            if(start.checkBoundaries(size + 1,size)) {
-                if (board[start.getX()][start.getY()] == currentPlayer)
+        int currentPlayer = getPlayer(start);
+        for (int i = 1; i < 4; i++) {
+            start = start.shift(dx, dy);
+            if (start.checkBoundaries(size, size)) {
+                if (getPlayer(start) == currentPlayer)
                     count++;
             }
+            //If 2nd neighbouring cell is not marked by current player - there is no point to continue the checking process
             else
-                i=4;
-
+                break;
         }
-        if (count ==4)
+        if (count == 4)
             return currentPlayer;
         else
             return 0;
 
-
-        // TODO
     }
-    
+
+
     /** getter for size of the board */
     public int getSize() {
         return this.size;

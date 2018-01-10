@@ -21,13 +21,16 @@ public interface Game {
 
 
     /** record a move on a given position */
-    void addMove(Coordinate pos);
+    void addMove(int x);
 
     /** check if some player wins or it is a draw */
     void checkResult();
 
     /** returns true, if and only if, the position is free */
     boolean isFree(Coordinate pos);
+
+    /** returns true, if and only if, the column has space */
+    boolean isFreeCol(int x);
     
     /** provide a user interface to the game */
     void setUserInterface(UserInterface ui);

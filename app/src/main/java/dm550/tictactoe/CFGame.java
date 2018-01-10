@@ -3,7 +3,7 @@ package dm550.tictactoe;
 /** main class creating a board and the GUI
  * defines the game play
  */
-public class TTTGame implements Game {
+public class CFGame implements Game {
     //this is not a test
     /** currently active player */
     private int currentPlayer;
@@ -12,16 +12,16 @@ public class TTTGame implements Game {
     private int numPlayers;
     
     /** the board we play on */
-    private TTTBoard board;
+    private CFBoard board;
     
     /** the gui for board games */
     private UserInterface ui;
     
     /** constructor that gets the number of players */
-    public TTTGame() {
+    public CFGame() {
         this.currentPlayer = 1;
         this.numPlayers = 2;
-        this.board = new TTTBoard(2);
+        this.board = new CFBoard(2);
     }
 
     @Override
@@ -29,8 +29,8 @@ public class TTTGame implements Game {
     }
 
     @Override
-    public void addMove(Coordinate pos) {
-        this.board.addMove(pos, this.currentPlayer);
+    public void addMove(int x) {
+        this.board.addMove(x, this.currentPlayer);
         if (this.currentPlayer == this.numPlayers) {
             this.currentPlayer = 1;
         } else {
@@ -72,6 +72,11 @@ public class TTTGame implements Game {
     @Override
     public boolean isFree(Coordinate pos) {
         return this.board.isFree(pos);
+    }
+
+    @Override
+    public boolean isFreeCol(int x) {
+        return this.board.isFreeCol(x);
     }
 
     @Override

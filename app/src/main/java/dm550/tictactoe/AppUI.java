@@ -38,7 +38,7 @@ public class AppUI extends AppCompatActivity implements UserInterface {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppUI.this.startGame(new TTTGame());
+                AppUI.this.startGame(new CFGame());
             }
         });
         layout.addView(b);
@@ -82,8 +82,9 @@ public class AppUI extends AppCompatActivity implements UserInterface {
                     @Override
                     public void onClick(View view) {
                         Coordinate pos = ((PosButton) view).pos;
-                        if (game.isFree(pos)) {
-                            game.addMove(pos);
+                        int x = pos.getX();
+                        if (game.isFreeCol(x)) {
+                            game.addMove(x);
                             for (PosButton button : buttons) {
                                 button.setText(game.getContent(button.pos));
                             }
