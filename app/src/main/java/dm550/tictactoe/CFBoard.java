@@ -33,7 +33,6 @@ public class CFBoard {
     
     /** checks whether the board is free at the given position */
     public boolean isFree(Coordinate c) {
-        System.out.println("if free checking on x: " + c.getX() + " y: " + c.getY());
         if (board[c.getX()][c.getY()]==0)
             return true;
         else
