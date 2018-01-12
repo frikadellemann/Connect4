@@ -50,12 +50,12 @@ public class CFGame implements Game {
 
     @Override
     public int getHorizontalSize() {
-        return this.board.getSize() + 1;
+        return this.board.getXSize();
     }
 
     @Override
     public int getVerticalSize() {
-        return this.board.getSize();
+        return this.board.getYSize();
     }
 
     @Override

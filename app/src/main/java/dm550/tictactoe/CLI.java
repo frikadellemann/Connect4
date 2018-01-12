@@ -6,7 +6,6 @@ public class CLI implements UserInterface {
 
     public static void main(String[] args) {
         UserInterface ui = new CLI();
-        //int numPlayers = getParameter("number of players",2,6);
         Game game = new CFGame();
         ui.startGame(game);
 

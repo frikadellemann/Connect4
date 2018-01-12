@@ -9,17 +9,17 @@ public class CFBoard {
      * board[x][y] == i   for i > 0 signifies that Player i made a move on (x,y)
      */
     private int[][] board;
-    
-    /** size of the (quadratic) board */
-    private int size;
-    
+
+    /** size of the (rectangular) board */
+    private int xSize;
+    private int ySize;
+
     /** constructor for creating a copy of the board
      * not needed in Part 1 - can be viewed as an example 
      */
     public CFBoard(CFBoard original) {
-        this.size = original.size;
-        for (int y = 0; y < this.size; y++) {
-            for (int x = 0; x < this.size; x++) {
+        for (int y = 0; y < this.ySize; y++) {
+            for (int x = 0; x < this.xSize; x++) {
                 this.board[x][y] = original.board[x][y];
             }
         }
@@ -27,8 +27,9 @@ public class CFBoard {
     
     /** constructor for creating an empty board for a given number of players */
     public CFBoard(int numPlayers) {
-        this.size = 6 ;
-        this.board = new int[this.getSize() + 1][this.getSize()];
+        this.ySize = 6 ;
+        this.xSize = 7 ;
+        this.board = new int[this.getXSize()][this.getYSize()];
     }
     
     /** checks whether the board is free at the given position */
@@ -39,7 +40,7 @@ public class CFBoard {
             return false;
     }
     public boolean isFreeCol(int x) {
-        for(int y = 0; y < size; y++) {
+        for(int y = 0; y < ySize; y++) {
             if (board[x][y] == 0)
                 return true;
         }
@@ -62,8 +63,8 @@ public class CFBoard {
         try {
             //if there is room in this column
             if (board[x][0]==0) {
-                if (player < this.size) {
-                    for(int y = size-1; y >= 0; y--)
+                if (player < 3) {
+                    for(int y = ySize-1; y >= 0; y--)
                         if(board[x][y]==0) {
                             board[x][y] = player;
                             break;
@@ -78,8 +79,8 @@ public class CFBoard {
 
     /** returns true if, and only if, there are no more free positions on the board */
     public boolean checkFull() {
-        for(int x = 0; x < size; x++)
-            for (int y = 0; y < size; y++)
+        for(int x = 0; x < xSize; x++)
+            for (int y = 0; y < ySize; y++)
             {
                 if(board[x][y]==0)
                     return false;
@@ -92,8 +93,8 @@ public class CFBoard {
      */
     public int checkWinning() {
         int result = 0;
-        for(int x = 0; x<size;x++) {
-            for (int y = 0; y < size; y++) {
+        for(int x = 0; x< xSize;x++) {
+            for (int y = 0; y < ySize; y++) {
                 Coordinate start = new XYCoordinate(x, y);
                 //We are interested in checking cells that are not free
                 if(!isFree(start)) {
@@ -122,7 +123,7 @@ public class CFBoard {
         int currentPlayer = getPlayer(start);
         for (int i = 1; i < 4; i++) {
             start = start.shift(dx, dy);
-            if (start.checkBoundaries(size, size)) {
+            if (start.checkBoundaries(xSize, ySize)) {
                 if (getPlayer(start) == currentPlayer)
                     count++;
             }
@@ -139,8 +140,12 @@ public class CFBoard {
 
 
     /** getter for size of the board */
-    public int getSize() {
-        return this.size;
+    public int getXSize() {
+        return this.xSize;
+    }
+    /** getter for column length */
+    public int getYSize() {
+        return this.ySize;
     }
     
     /** pretty printing of the board
@@ -148,8 +153,8 @@ public class CFBoard {
      */
     public String toString() {
         String result = "";
-        for (int y = 0; y < this.size; y++) {
-            for (int x = 0; x < this.size + 1; x++) {
+        for (int y = 0; y < this.ySize; y++) {
+            for (int x = 0; x < this.xSize; x++) {
                 result += this.board[x][y]+" ";
             }
             result += "\n";
